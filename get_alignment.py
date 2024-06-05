@@ -15,9 +15,11 @@ r2 = args[2]
 reference = args[3]
 sample_name = args[4]
 gap_open_penalty = args[5] # default value for this with bowtie2 is 5. Suggest increasing for variants with lots of missense mutations
+fastq_dir = args[6]
 
 ref_name = reference.split(".")[0]
 subfolder_name = "get_pileup_on_" + sample_name
+
 
 # ======================================================================
 # load modules on erisone
@@ -44,8 +46,13 @@ if not os.path.exists(subfolder_name + "/alignment.sam"):
     os.system(command)
 
     # trim the reads, put output into the subfolder
-    command = "trim_galore --paired " + r1 + " " + r2 + " -o " + subfolder_name
+    command = "trim_galore --paired " + fastq_dir + "/" + r1 + " " + fastq_dir + "/" + r2 + " -o " + subfolder_name
     os.system(command)
+
+
+    assert os.path.isfile(fastq_dir + "/" + r1), "The following file could not be found: %s/%s" % (fastq_dir, r1)
+    assert os.path.isfile(fastq_dir + "/" +r2), "The following file could not be found: %s/%s" % (fastq_dir, r1)
+
 
     # map the reads
     r1_trimmed = subfolder_name + "/" + r1.split(".")[0] + "_val_1.fq.gz"
