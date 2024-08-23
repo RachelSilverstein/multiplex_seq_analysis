@@ -21,5 +21,7 @@ module load cutadapt
 ## Installation:
 
 ```
+$ python -m venv multiplex_seq_env
+$ source multiplex_seq_env/bin/activate
 $ pip install -r requirements.txt
 ```
